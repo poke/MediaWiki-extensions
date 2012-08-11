@@ -34,11 +34,11 @@ function efListTransclusionsSkinTemplateToolboxEnd ( $tpl )
 {
 	if( $tpl->data['notspecialpage'] )
 	{
-		$spTitle = SpecialPage::getTitleFor( 'ListTransclusions', $tpl->skin->thispage );
+		$spTitle = SpecialPage::getTitleFor( 'ListTransclusions', $tpl->getSkin()->thispage );
 		
 		echo "\n				";
 		echo '<li id="t-listtransclusions"><a href="' . htmlspecialchars( $spTitle->getLocalUrl() ) . '"';
-		echo $tpl->skin->tooltipAndAccesskey( 't-listtransclusions' ) . '>';
+		echo Linker::tooltipAndAccesskeyAttribs( 't-listtransclusions' ) . '>';
 		$tpl->msg( 'listtransclusions' );
 		echo "</a></li>\n";
 	}

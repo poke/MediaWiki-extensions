@@ -166,9 +166,9 @@ class ListTransclusions extends SpecialPage
 		$f .= Xml::fieldset( wfMsg( 'listtransclusions' ) );
 		
 		// hidden values
-		$f .= Xml::hidden( 'title', $wgTitle->getPrefixedText() );
+		$f .= Html::hidden( 'title', $wgTitle->getPrefixedText() );
 		foreach ( $this->opts->getUnconsumedValues() as $name => $value )
-			$f .= Xml::hidden( $name, $value );
+			$f .= Html::hidden( $name, $value );
 		
 		// form elements
 		$f .= Xml::inputLabel( wfMsg( 'listtransclusions-page' ), 'target',
