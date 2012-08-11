@@ -28,10 +28,14 @@ $wgSpecialPageGroups['ListTransclusions']      = 'pagetools';
  * SkinTemplateToolboxEnd hook
  *
  * @param $tpl Object the calling template object
+ * @param $dummy boolean
  * @return boolean always true
  */
-function efListTransclusionsSkinTemplateToolboxEnd ( $tpl )
+function efListTransclusionsSkinTemplateToolboxEnd ( $tpl, $dummy )
 {
+	if ( $dummy )
+		return true;
+	
 	if( $tpl->data['notspecialpage'] )
 	{
 		$spTitle = SpecialPage::getTitleFor( 'ListTransclusions', $tpl->getSkin()->thispage );
@@ -46,6 +50,26 @@ function efListTransclusionsSkinTemplateToolboxEnd ( $tpl )
 }
 
 /**
+ * BaseTemplateToolbox hook
+ *
+ * @param $tpl Object the skin template
+ * @param $toolbox Object array of toolbox items
+ * @return boolean always true
+ */
+function efListTransclusionsBaseTemplateToolbox ( $tpl, $toolbox )
+{
+	if ( $tpl->data['notspecialpage'] )
+	{
+		$toolbox['listtransclusions'] = array(
+			'href' => SpecialPage::getTitleFor( 'ListTransclusions', $tpl->getSkin()->thispage )->getLocalUrl(),
+			'id' => 't-listtransclusions'
+		);
+	}
+	return true;
+}
+
+
+/**
  * Extension initialization
  */
 function efListTransclusions ()
@@ -53,6 +77,7 @@ function efListTransclusions ()
 	global $wgHooks;
 	wfLoadExtensionMessages( 'ListTransclusions' );
 	
-	// Hook to add entry to the toolbox
+	// Hooks to add entry to the toolbox
 	$wgHooks['SkinTemplateToolboxEnd'][] = 'efListTransclusionsSkinTemplateToolboxEnd';
+	$wgHooks['BaseTemplateToolbox'][] = 'efListTransclusionsBaseTemplateToolbox';
 }
