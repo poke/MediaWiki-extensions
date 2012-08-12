@@ -4,7 +4,7 @@
  *
  * @author Patrick Westerhoff [poke]
  */
-class ListTransclusions extends SpecialPage
+class SpecialListTransclusions extends SpecialPage
 {
 	protected $skin, $dbr;
 	protected $target;

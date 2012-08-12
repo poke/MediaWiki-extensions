@@ -7,8 +7,8 @@
 if ( !defined( 'MEDIAWIKI' ) )
 	exit( 1 );
 
-$wgExtensionFunctions[]              = 'efListTransclusions';
 $wgExtensionCredits['specialpage'][] = array(
+	'path'           => __FILE__,
 	'name'           => 'ListTransclusions',
 	'author'         => 'Patrick Westerhoff',
 	'url'            => 'http://mediawiki.org/wiki/Extension:ListTransclusions',
@@ -17,37 +17,13 @@ $wgExtensionCredits['specialpage'][] = array(
 );
 
 /* Extension setup */
-$dir                                           = dirname( __FILE__ ) . '/';
-$wgAutoloadClasses['ListTransclusions']        = $dir . 'ListTransclusions_body.php';
+$dir = dirname( __FILE__ ) . '/';
+$wgAutoloadClasses['SpecialListTransclusions'] = $dir . 'SpecialListTransclusions.php';
 $wgExtensionMessagesFiles['ListTransclusions'] = $dir . 'ListTransclusions.i18n.php';
-$wgExtensionAliasesFiles['ListTransclusions']  = $dir . 'ListTransclusions.alias.php';
-$wgSpecialPages['ListTransclusions']           = 'ListTransclusions';
-$wgSpecialPageGroups['ListTransclusions']      = 'pagetools';
+$wgExtensionMessagesFiles['ListTransclusionsAlias'] = $dir . 'ListTransclusions.alias.php';
 
-/**
- * SkinTemplateToolboxEnd hook
- *
- * @param $tpl Object the calling template object
- * @param $dummy boolean
- * @return boolean always true
- */
-function efListTransclusionsSkinTemplateToolboxEnd ( $tpl, $dummy )
-{
-	if ( $dummy )
-		return true;
-	
-	if( $tpl->data['notspecialpage'] )
-	{
-		$spTitle = SpecialPage::getTitleFor( 'ListTransclusions', $tpl->getSkin()->thispage );
-		
-		echo "\n				";
-		echo '<li id="t-listtransclusions"><a href="' . htmlspecialchars( $spTitle->getLocalUrl() ) . '"';
-		echo Linker::tooltipAndAccesskeyAttribs( 't-listtransclusions' ) . '>';
-		$tpl->msg( 'listtransclusions' );
-		echo "</a></li>\n";
-	}
-	return true;
-}
+$wgSpecialPages['ListTransclusions'] = 'SpecialListTransclusions';
+$wgSpecialPageGroups['ListTransclusions'] = 'pagetools';
 
 /**
  * BaseTemplateToolbox hook
@@ -68,16 +44,5 @@ function efListTransclusionsBaseTemplateToolbox ( $tpl, $toolbox )
 	return true;
 }
 
-
-/**
- * Extension initialization
- */
-function efListTransclusions ()
-{
-	global $wgHooks;
-	wfLoadExtensionMessages( 'ListTransclusions' );
-	
-	// Hooks to add entry to the toolbox
-	$wgHooks['SkinTemplateToolboxEnd'][] = 'efListTransclusionsSkinTemplateToolboxEnd';
-	$wgHooks['BaseTemplateToolbox'][] = 'efListTransclusionsBaseTemplateToolbox';
-}
+/* Extension hooks */
+$wgHooks['BaseTemplateToolbox'][] = 'efListTransclusionsBaseTemplateToolbox';
