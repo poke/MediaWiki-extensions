@@ -4,8 +4,9 @@
  *
  * @author Patrick Westerhoff [poke]
  */
-if ( !defined( 'MEDIAWIKI' ) )
+if ( !defined( 'MEDIAWIKI' ) ) {
 	exit( 1 );
+}
 
 $wgExtensionCredits['specialpage'][] = array(
 	'path'           => __FILE__,
@@ -32,10 +33,8 @@ $wgSpecialPageGroups['ListTransclusions'] = 'pagetools';
  * @param $toolbox Object array of toolbox items
  * @return boolean always true
  */
-function efListTransclusionsBaseTemplateToolbox ( $tpl, $toolbox )
-{
-	if ( $tpl->data['notspecialpage'] )
-	{
+function efListTransclusionsBaseTemplateToolbox ( $tpl, $toolbox ) {
+	if ( $tpl->data['notspecialpage'] ) {
 		$toolbox['listtransclusions'] = array(
 			'href' => SpecialPage::getTitleFor( 'ListTransclusions', $tpl->getSkin()->thispage )->getLocalUrl(),
 			'id' => 't-listtransclusions'
