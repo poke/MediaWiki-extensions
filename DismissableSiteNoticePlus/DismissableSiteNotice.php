@@ -32,19 +32,16 @@ function wfDismissableSiteNotice( &$notice ) {
 
 	$noticeId = intval( $wgMajorSiteNoticeID ) . '.' . intval( wfMessage( 'sitenotice_id' )->inContentLanguage()->text() );
 	$closeText = wfMessage( 'sitenotice_close' )->text();
-	$encNotice = Xml::escapeJsString($notice);
-	$encClose = Xml::escapeJsString( wfMessage( 'sitenotice_close' )->text() );
-
 	$notice = <<<EOT
-		<script type="text/javascript">/*<![CDATA[*/
+		<script type="text/javascript">
 		function dismissNotice() {
-			var noticeDiv  = document.getElementById( 'mw-dismissable-notice' );
+			var noticeDiv = document.getElementById('mw-dismissable-notice');
 			var expireDate = new Date();
-			expireDate.setTime( expireDate.getTime() + 30 * 86400 * 1000 ); // 30 days
+			expireDate.setTime(expireDate.getTime() + 30 * 86400 * 1000); // 30 days
 			document.cookie = 'dismissSiteNotice=$noticeId; expires=' + expireDate.toGMTString() + '; path=/';
-			noticeDiv.parentNode.removeChild( noticeDiv );
+			noticeDiv.parentNode.removeChild(noticeDiv);
 		}
-		/*]]>*/</script>
+		</script>
 		<table id="mw-dismissable-notice" style="width: 100%; margin-top: 0.5em;" cellpadding="0" cellspacing="0"><tr>
 			<td>$notice</td>
 			<td style="padding-left: 0.5em;">[<a href="javascript:dismissNotice();">$closeText</a>]</td>
