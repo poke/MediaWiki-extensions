@@ -9,7 +9,7 @@ $wgExtensionCredits['other'][] = array(
 	'url' => 'http://wiki.guildwars.com/wiki/User:Poke',
 );
 
-$wgExtensionMessagesFiles['DismissableSiteNotice'] = __FILE__ . '/DismissableSiteNotice.i18n.php';
+$wgExtensionMessagesFiles['DismissableSiteNotice'] = __DIR__ . '/DismissableSiteNotice.i18n.php';
 
 function wfDismissableSiteNoticeBefore( &$notice ) {
 	global $wgMajorSiteNoticeID;
