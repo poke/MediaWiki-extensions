@@ -34,11 +34,11 @@ function efAlternativeUserTalkArticleEditUpdates ( &$article, $editInfo, $change
 	if ( !$changed )
 		return true;
 
-	$source    = wfMsgForContent( 'alternativeusertalk-conf' );
-	if ( wfEmptyMsg( 'alternativeusertalk-conf', $source ) )
+	$config = wfMessage( 'alternativeusertalk-conf' )->inContentLanguage();
+	if ( $config->isBlank() )
 		return true;
 
-	$source    = explode( "\n", $source );
+	$source    = explode( "\n", $config->text() );
 	$pageTitle = $article->mTitle->getPrefixedText();
 	$userName  = '';
 
@@ -85,11 +85,13 @@ function efAlternativeUserTalkUserRetrieveNewTalks ( &$user, &$talks )
 	if ( !$user->getNewtalk() )
 		return true;
 
+	$config = wfMessage( 'alternativeusertalk-conf' )->inContentLanguage();
+	if ( $config->isBlank() )
+		return true;
+
 	// try to find alternative user talk page entry
 	$userName = $user->getName();
-	$source   = explode( "\n", wfMsgForContent( 'alternativeusertalk-conf' ) );
-	if ( wfEmptyMsg( 'alternativeusertalk-conf', $source ) )
-		return true;
+	$source   = explode( "\n", $config->text() );
 
 	foreach ( $source as $entry )
 	{
@@ -108,9 +110,9 @@ function efAlternativeUserTalkUserRetrieveNewTalks ( &$user, &$talks )
 
 			// kind of abusing the multi-new-message feature for multiple wikis here
 			// to be able to change the target link... (wiki is the "link text" here)
-			$talks[] = array( 'wiki' => wfMsgHtml( 'alternativeusertalk-link' ),
+			$talks[] = array( 'wiki' => wfMessage( 'alternativeusertalk-link' )->escaped(),
 				'link' => $atp->getLinkUrl( array( 'redirect' => 'no' ) ));
-			$talks[] = array( 'wiki' => wfMsgHtml( 'alternativeusertalk-diff' ),
+			$talks[] = array( 'wiki' => wfMessage( 'alternativeusertalk-diff' )->escaped(),
 				'link' => $atp->getLinkUrl( array( 'diff' => 'cur' ) ) );
 
 			return false;
