@@ -33,15 +33,15 @@ function efAlternativeUserTalkArticleEditUpdates ( &$article, $editInfo, $change
 	// we don't notify on null or unimportant edits
 	if ( !$changed )
 		return true;
-		
+
 	$source    = wfMsgForContent( 'alternativeusertalk-conf' );
 	if ( wfEmptyMsg( 'alternativeusertalk-conf', $source ) )
 		return true;
-	
+
 	$source    = explode( "\n", $source );
 	$pageTitle = $article->mTitle->getPrefixedText();
 	$userName  = '';
-	
+
 	// look for pageTitle in the settings
 	foreach ( $source as $entry )
 	{
@@ -52,11 +52,11 @@ function efAlternativeUserTalkArticleEditUpdates ( &$article, $editInfo, $change
 			break;
 		}
 	}
-	
+
 	// no match, then we are done
 	if ( $userName === '' )
 		return true;
-	
+
 	// this is the alternative user talk page for $userName, so add a notice now.
 	$other = User::newFromName( $userName, false );
 	if ( !$other )
@@ -65,7 +65,7 @@ function efAlternativeUserTalkArticleEditUpdates ( &$article, $editInfo, $change
 		$other->setNewtalk( true );
 	else
 		wfDebug( __METHOD__ . ": don't need to notify a nonexistent user\n" );
-	
+
 	return true;
 }
 
@@ -80,17 +80,17 @@ function efAlternativeUserTalkArticleEditUpdates ( &$article, $editInfo, $change
 function efAlternativeUserTalkUserRetrieveNewTalks ( &$user, &$talks )
 {
 	global $wgTitle;
-	
+
 	// no new messages
 	if ( !$user->getNewtalk() )
 		return true;
-			
+
 	// try to find alternative user talk page entry
 	$userName = $user->getName();
 	$source   = explode( "\n", wfMsgForContent( 'alternativeusertalk-conf' ) );
 	if ( wfEmptyMsg( 'alternativeusertalk-conf', $source ) )
 		return true;
-	
+
 	foreach ( $source as $entry )
 	{
 		$entry = explode( '=', $entry );
@@ -102,17 +102,17 @@ function efAlternativeUserTalkUserRetrieveNewTalks ( &$user, &$talks )
 				$user->setNewtalk( false );
 				return true;
 			}
-			
+
 			// alternative talk page
 			$atp = Title::newFromText( trim( $entry[1] ) );
-			
+
 			// kind of abusing the multi-new-message feature for multiple wikis here
 			// to be able to change the target link... (wiki is the "link text" here)
 			$talks[] = array( 'wiki' => wfMsgHtml( 'alternativeusertalk-link' ),
 				'link' => $atp->getLinkUrl( array( 'redirect' => 'no' ) ));
 			$talks[] = array( 'wiki' => wfMsgHtml( 'alternativeusertalk-diff' ),
 				'link' => $atp->getLinkUrl( array( 'diff' => 'cur' ) ) );
-			
+
 			return false;
 		}
 	}
@@ -127,7 +127,7 @@ function efAlternativeUserTalk ()
 {
 	global $wgHooks;
 	wfLoadExtensionMessages( 'AlternativeUserTalk' );
-	
+
 	$wgHooks['ArticleEditUpdates'][]   = 'efAlternativeUserTalkArticleEditUpdates';
 	$wgHooks['UserRetrieveNewTalks'][] = 'efAlternativeUserTalkUserRetrieveNewTalks';
 }
