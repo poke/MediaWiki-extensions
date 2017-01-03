@@ -1,8 +1,5 @@
 # MediaWiki extensions
 
-## DismissableSiteNoticePlus
-*DismissableSiteNoticePlus* is a fork of the original [DismissableSiteNotice](http://mediawiki.org/wiki/Extension:DismissableSiteNotice) by Brion Vibber. It features an improved output format that also allows a better styling of the site notice.
-
 ## AlternativeUserTalk
 The *AlternativeUserTalk* extension allows users to use a different page as their user talk page. This extension basically changes the new messages notice so it appears for changes on the alternative user talk page, as specified in a custom system message, and adds functionality to clear it for that page.
 
